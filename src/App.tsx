@@ -16,10 +16,11 @@ function App() {
     interestRate: 10,
     loanTermMonths: 36,
     originationFee: 3,
-    originationFeePercent: true
+    originationFeePercent: true,
+    paymentFrequency: 'monthly'
   });
 
-  const handleChange = (field: keyof LoanInput, value: number | boolean) => {
+  const handleChange = (field: keyof LoanInput, value: number | boolean | string) => {
     setValues(prev => ({ ...prev, [field]: value }));
   };
 
@@ -36,7 +37,7 @@ function App() {
         <InputCard values={values} onChange={handleChange} />
 
         {/* 3) RESULTS PANEL */}
-        <ResultsPanel result={result} />
+        <ResultsPanel result={result} paymentFrequency={values.paymentFrequency} />
 
         {/* 4) SCENARIO CONTROLS */}
         <ScenarioControls values={values} onChange={handleChange} />
@@ -45,7 +46,7 @@ function App() {
         <AdContainer slotId="native-slot-placeholder" sticky={false} />
 
         {/* 6) BREAKDOWN TABLE */}
-        <BreakdownTable result={result} loanTermMonths={values.loanTermMonths} />
+        <BreakdownTable result={result} loanTermMonths={values.loanTermMonths} paymentFrequency={values.paymentFrequency} />
 
         {/* 7) SEO TEXT */}
         <SEOText />

@@ -3,7 +3,7 @@ import type { LoanInput } from '../logic/loanCalculations';
 
 interface InputCardProps {
     values: LoanInput;
-    onChange: (field: keyof LoanInput, value: number | boolean) => void;
+    onChange: (field: keyof LoanInput, value: number | boolean | string) => void;
 }
 
 export const InputCard: React.FC<InputCardProps> = ({ values, onChange }) => {
@@ -79,6 +79,19 @@ export const InputCard: React.FC<InputCardProps> = ({ values, onChange }) => {
                             <span style={{ fontSize: '0.8125rem' }}>%</span>
                         </label>
                     </div>
+                </div>
+
+                {/* Payment Frequency */}
+                <div>
+                    <label htmlFor="paymentFrequency">Payment Frequency</label>
+                    <select
+                        id="paymentFrequency"
+                        value={values.paymentFrequency}
+                        onChange={(e) => onChange('paymentFrequency', e.target.value as 'monthly' | 'biweekly')}
+                    >
+                        <option value="monthly">Monthly</option>
+                        <option value="biweekly">Bi-Weekly (every 2 weeks)</option>
+                    </select>
                 </div>
             </div>
         </div>

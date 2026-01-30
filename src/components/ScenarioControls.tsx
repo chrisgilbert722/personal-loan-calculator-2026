@@ -3,7 +3,7 @@ import type { LoanInput } from '../logic/loanCalculations';
 
 interface ScenarioControlsProps {
     values: LoanInput;
-    onChange: (field: keyof LoanInput, value: number | boolean) => void;
+    onChange: (field: keyof LoanInput, value: number | boolean | string) => void;
 }
 
 export const ScenarioControls: React.FC<ScenarioControlsProps> = ({ values, onChange }) => {
