@@ -1,49 +1,49 @@
 import React from 'react';
-import type { OvertimeInput } from '../logic/overtimeCalculations';
+import type { LoanInput } from '../logic/loanCalculations';
 
 interface ScenarioControlsProps {
-    values: OvertimeInput;
-    onChange: (field: keyof OvertimeInput, value: number | boolean | string) => void;
+    values: LoanInput;
+    onChange: (field: keyof LoanInput, value: number | boolean | string) => void;
 }
 
 export const ScenarioControls: React.FC<ScenarioControlsProps> = ({ values, onChange }) => {
-    const overtimeOptions = [
-        { label: '5 hrs', value: 5 },
-        { label: '10 hrs', value: 10 },
-        { label: '15 hrs', value: 15 },
-        { label: '20 hrs', value: 20 },
+    const termOptions = [
+        { label: '2 Years', value: 24 },
+        { label: '3 Years', value: 36 },
+        { label: '4 Years', value: 48 },
+        { label: '5 Years', value: 60 },
     ];
 
-    const rateOptions = [
-        { label: '$15/hr', value: 15 },
-        { label: '$25/hr', value: 25 },
-        { label: '$35/hr', value: 35 },
-        { label: '$50/hr', value: 50 },
+    const amountOptions = [
+        { label: '$5K', value: 5000 },
+        { label: '$10K', value: 10000 },
+        { label: '$15K', value: 15000 },
+        { label: '$25K', value: 25000 },
     ];
 
     return (
         <div className="card">
             <h3 style={{ marginBottom: 'var(--space-4)' }}>Quick Adjustments</h3>
 
-            {/* Overtime Hours Quick Select */}
+            {/* Loan Term Quick Select */}
             <div style={{ marginBottom: 'var(--space-4)' }}>
-                <label style={{ marginBottom: 'var(--space-2)' }}>Overtime Hours</label>
+                <label style={{ marginBottom: 'var(--space-2)' }}>Loan Term</label>
                 <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                    {overtimeOptions.map((option) => (
+                    {termOptions.map((option) => (
                         <button
                             key={option.value}
                             type="button"
-                            onClick={() => onChange('overtimeHours', option.value)}
+                            onClick={() => onChange('loanTermMonths', option.value)}
                             style={{
                                 flex: 1,
                                 padding: 'var(--space-2) var(--space-3)',
                                 fontSize: '0.875rem',
                                 fontWeight: 500,
                                 border: '1px solid',
-                                borderColor: values.overtimeHours === option.value ? 'var(--color-primary)' : 'var(--color-border)',
+                                borderColor: values.loanTermMonths === option.value ? 'var(--color-primary)' : 'var(--color-border)',
                                 borderRadius: 'var(--radius-md)',
-                                background: values.overtimeHours === option.value ? 'var(--color-primary)' : 'transparent',
-                                color: values.overtimeHours === option.value ? '#fff' : 'var(--color-text-primary)',
+                                background: values.loanTermMonths === option.value ? 'var(--color-primary)' : 'transparent',
+                                color: values.loanTermMonths === option.value ? '#fff' : 'var(--color-text-primary)',
                                 cursor: 'pointer'
                             }}
                         >
@@ -53,25 +53,25 @@ export const ScenarioControls: React.FC<ScenarioControlsProps> = ({ values, onCh
                 </div>
             </div>
 
-            {/* Hourly Rate Quick Select */}
+            {/* Loan Amount Quick Select */}
             <div>
-                <label style={{ marginBottom: 'var(--space-2)' }}>Hourly Rate</label>
+                <label style={{ marginBottom: 'var(--space-2)' }}>Loan Amount</label>
                 <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                    {rateOptions.map((option) => (
+                    {amountOptions.map((option) => (
                         <button
                             key={option.value}
                             type="button"
-                            onClick={() => onChange('hourlyRate', option.value)}
+                            onClick={() => onChange('loanAmount', option.value)}
                             style={{
                                 flex: 1,
                                 padding: 'var(--space-2) var(--space-3)',
                                 fontSize: '0.875rem',
                                 fontWeight: 500,
                                 border: '1px solid',
-                                borderColor: values.hourlyRate === option.value ? 'var(--color-primary)' : 'var(--color-border)',
+                                borderColor: values.loanAmount === option.value ? 'var(--color-primary)' : 'var(--color-border)',
                                 borderRadius: 'var(--radius-md)',
-                                background: values.hourlyRate === option.value ? 'var(--color-primary)' : 'transparent',
-                                color: values.hourlyRate === option.value ? '#fff' : 'var(--color-text-primary)',
+                                background: values.loanAmount === option.value ? 'var(--color-primary)' : 'transparent',
+                                color: values.loanAmount === option.value ? '#fff' : 'var(--color-text-primary)',
                                 cursor: 'pointer'
                             }}
                         >

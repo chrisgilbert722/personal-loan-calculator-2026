@@ -1,121 +1,97 @@
 import React from 'react';
-import type { OvertimeInput } from '../logic/overtimeCalculations';
-import { US_STATES } from '../logic/overtimeCalculations';
+import type { LoanInput } from '../logic/loanCalculations';
 
 interface InputCardProps {
-    values: OvertimeInput;
-    onChange: (field: keyof OvertimeInput, value: number | boolean | string) => void;
+    values: LoanInput;
+    onChange: (field: keyof LoanInput, value: number | boolean | string) => void;
 }
 
 export const InputCard: React.FC<InputCardProps> = ({ values, onChange }) => {
     return (
         <div className="card">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-                {/* Hourly Rate */}
+                {/* Loan Amount */}
                 <div>
-                    <label htmlFor="hourlyRate">Hourly Pay Rate ($)</label>
+                    <label htmlFor="loanAmount">Loan Amount ($)</label>
                     <input
                         type="number"
-                        id="hourlyRate"
-                        value={values.hourlyRate}
-                        onChange={(e) => onChange('hourlyRate', parseFloat(e.target.value) || 0)}
+                        id="loanAmount"
+                        value={values.loanAmount}
+                        onChange={(e) => onChange('loanAmount', parseFloat(e.target.value) || 0)}
                         min="0"
-                        step="0.50"
-                    />
-                </div>
-
-                {/* Regular Hours */}
-                <div>
-                    <label htmlFor="regularHours">Regular Hours (per week)</label>
-                    <input
-                        type="number"
-                        id="regularHours"
-                        value={values.regularHours}
-                        onChange={(e) => onChange('regularHours', parseFloat(e.target.value) || 0)}
-                        min="0"
-                        max="168"
-                        step="1"
+                        step="1000"
                     />
                     <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                        Standard threshold is 40 hours/week
+                        The total amount you wish to borrow
                     </span>
                 </div>
 
-                {/* Overtime Hours */}
+                {/* Interest Rate */}
                 <div>
-                    <label htmlFor="overtimeHours">Overtime Hours (per week)</label>
+                    <label htmlFor="interestRate">Interest Rate (APR) %</label>
                     <input
                         type="number"
-                        id="overtimeHours"
-                        value={values.overtimeHours}
-                        onChange={(e) => onChange('overtimeHours', parseFloat(e.target.value) || 0)}
+                        id="interestRate"
+                        value={values.interestRate}
+                        onChange={(e) => onChange('interestRate', parseFloat(e.target.value) || 0)}
                         min="0"
-                        max="128"
-                        step="1"
+                        max="50"
+                        step="0.1"
                     />
                     <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                        Hours worked beyond regular hours (typically at 1.5x rate)
+                        Annual percentage rate offered by the lender
                     </span>
                 </div>
 
-                {/* State */}
+                {/* Loan Term */}
                 <div>
-                    <label htmlFor="state">State</label>
+                    <label htmlFor="loanTermMonths">Loan Term (Months)</label>
+                    <input
+                        type="number"
+                        id="loanTermMonths"
+                        value={values.loanTermMonths}
+                        onChange={(e) => onChange('loanTermMonths', parseFloat(e.target.value) || 0)}
+                        min="6"
+                        max="84"
+                        step="6"
+                    />
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                        Common terms: 24, 36, 48, 60, or 72 months
+                    </span>
+                </div>
+
+                {/* Origination Fee */}
+                <div>
+                    <label htmlFor="originationFeePercent">Origination Fee (%)</label>
+                    <input
+                        type="number"
+                        id="originationFeePercent"
+                        value={values.originationFeePercent}
+                        onChange={(e) => onChange('originationFeePercent', parseFloat(e.target.value) || 0)}
+                        min="0"
+                        max="10"
+                        step="0.5"
+                    />
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                        One-time fee charged by lender (typically 1-6%)
+                    </span>
+                </div>
+
+                {/* Payment Frequency */}
+                <div>
+                    <label htmlFor="paymentFrequency">Payment Frequency</label>
                     <select
-                        id="state"
-                        value={values.state}
-                        onChange={(e) => onChange('state', e.target.value)}
+                        id="paymentFrequency"
+                        value={values.paymentFrequency}
+                        onChange={(e) => onChange('paymentFrequency', e.target.value)}
                     >
-                        {US_STATES.map((st) => (
-                            <option key={st.value} value={st.value}>{st.label}</option>
-                        ))}
+                        <option value="monthly">Monthly (12 payments/year)</option>
+                        <option value="biweekly">Bi-Weekly (26 payments/year)</option>
                     </select>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                        Bi-weekly payments may reduce total interest
+                    </span>
                 </div>
-
-                {/* Overtime Multiplier */}
-                <div>
-                    <label htmlFor="overtimeMultiplier">Overtime Multiplier</label>
-                    <select
-                        id="overtimeMultiplier"
-                        value={values.overtimeMultiplier}
-                        onChange={(e) => onChange('overtimeMultiplier', parseFloat(e.target.value))}
-                    >
-                        <option value={1.5}>1.5x (Time and a Half)</option>
-                        <option value={1.25}>1.25x</option>
-                        <option value={2}>2x (Double Time)</option>
-                    </select>
-                </div>
-
-                {/* Double Time Toggle */}
-                <div>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', cursor: 'pointer' }}>
-                        <input
-                            type="checkbox"
-                            checked={values.includeDoubleTime}
-                            onChange={(e) => onChange('includeDoubleTime', e.target.checked)}
-                        />
-                        <span>Include Double-Time Hours (2x rate)</span>
-                    </label>
-                </div>
-
-                {/* Double Time Hours (if enabled) */}
-                {values.includeDoubleTime && (
-                    <div>
-                        <label htmlFor="doubleTimeHours">Double-Time Hours (per week)</label>
-                        <input
-                            type="number"
-                            id="doubleTimeHours"
-                            value={values.doubleTimeHours}
-                            onChange={(e) => onChange('doubleTimeHours', parseFloat(e.target.value) || 0)}
-                            min="0"
-                            max="128"
-                            step="1"
-                        />
-                        <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
-                            Hours paid at 2x rate (separate from overtime hours)
-                        </span>
-                    </div>
-                )}
             </div>
         </div>
     );

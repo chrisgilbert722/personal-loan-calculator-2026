@@ -7,25 +7,23 @@ import { AdContainer } from './components/AdContainer';
 import { BreakdownTable } from './components/BreakdownTable';
 import { SEOText } from './components/SEOText';
 import { Footer } from './components/Footer';
-import { calculateOvertime } from './logic/overtimeCalculations';
-import type { OvertimeInput } from './logic/overtimeCalculations';
+import { calculateLoan } from './logic/loanCalculations';
+import type { LoanInput } from './logic/loanCalculations';
 
 function App() {
-  const [values, setValues] = useState<OvertimeInput>({
-    hourlyRate: 25,
-    regularHours: 40,
-    overtimeHours: 10,
-    state: 'TX',
-    overtimeMultiplier: 1.5,
-    includeDoubleTime: false,
-    doubleTimeHours: 0
+  const [values, setValues] = useState<LoanInput>({
+    loanAmount: 15000,
+    interestRate: 10.5,
+    loanTermMonths: 48,
+    originationFeePercent: 2,
+    paymentFrequency: 'monthly'
   });
 
-  const handleChange = (field: keyof OvertimeInput, value: number | boolean | string) => {
+  const handleChange = (field: keyof LoanInput, value: number | boolean | string) => {
     setValues(prev => ({ ...prev, [field]: value }));
   };
 
-  const result = calculateOvertime(values);
+  const result = calculateLoan(values);
 
   return (
     <>
@@ -38,7 +36,7 @@ function App() {
         <InputCard values={values} onChange={handleChange} />
 
         {/* 3) RESULTS PANEL */}
-        <ResultsPanel result={result} />
+        <ResultsPanel result={result} paymentFrequency={values.paymentFrequency} />
 
         {/* 4) SCENARIO CONTROLS */}
         <ScenarioControls values={values} onChange={handleChange} />
@@ -47,7 +45,7 @@ function App() {
         <AdContainer slotId="native-slot-placeholder" sticky={false} />
 
         {/* 6) BREAKDOWN TABLE */}
-        <BreakdownTable result={result} includeDoubleTime={values.includeDoubleTime} />
+        <BreakdownTable result={result} loanTermMonths={values.loanTermMonths} paymentFrequency={values.paymentFrequency} />
 
         {/* 7) SEO TEXT */}
         <SEOText />
